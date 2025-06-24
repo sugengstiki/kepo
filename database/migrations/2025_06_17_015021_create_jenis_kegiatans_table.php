@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pencapaians', function (Blueprint $table) {
+        Schema::create('jenis_kegiatans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mahasiswa_id')->constrained()->onDelete('cascade');
-            $table->integer('target_poin');
-            $table->integer('angkatan');
+            $table->string('nama')->unique(); // The name of the activity type, e.g., "Seminar", "Competition"
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pencapaians');
+        Schema::dropIfExists('jenis_kegiatans');
     }
 };

@@ -8,13 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Kegiatan extends Model
 {
     use HasFactory;
-    protected $fillable = ['mahasiswa_id', 'pedoman_id', 'nama_kegiatan', 'berkas_pendukung', 'poin', 'status_validasi'];
+    
+    protected $fillable = ['mahasiswa_id', 'pedoman_detail_id', 'nama_kegiatan', 'berkas_pendukung', 'poin', 'status_validasi'];
+    
     public function mahasiswa()
     {
         return $this->belongsTo(Mahasiswa::class);
     }
-    public function pedoman()
+    
+    public function pedomanDetail()
     {
-        return $this->belongsTo(Pedoman::class);
+        return $this->belongsTo(PedomanDetail::class);
     }
 }

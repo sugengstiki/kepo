@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('kegiatans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('mahasiswa_id')->constrained()->onDelete('cascade');
-            $table->foreignId('pedoman_id')->constrained()->onDelete('cascade');
+            $table->foreignId('pedoman_detail_id')->constrained()->onDelete('cascade');
             $table->string('nama_kegiatan');
             $table->string('berkas_pendukung');
             $table->integer('poin');

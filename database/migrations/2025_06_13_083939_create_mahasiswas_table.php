@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('mahasiswas', function (Blueprint $table) {
             $table->id();
+            $table->string('nrp')->unique()->after('id'); // Menambahkan kolom NRP
+            $table->string('nama')->after('nrp'); // Menambahkan kolom Nama
+            $table->string('email')->after('nama');
+            $table->integer('tahun_masuk')->after('email');
+            $table->foreignId('program_studi_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

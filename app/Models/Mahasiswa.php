@@ -8,13 +8,37 @@ use Illuminate\Database\Eloquent\Model;
 class Mahasiswa extends Model
 {
     use HasFactory;
-    protected $fillable = ['nama', 'email'];
-    public function kegiatan()
+    // protected $table = 'mahasiswas';
+    
+    protected $fillable = [
+        'nrp','nama', 'email',
+        'tahun_masuk','user_id',
+        'program_studi_id',
+        ];
+    
+    public function user()
     {
-        return $this->hasMany(Kegiatan::class);
+        return $this->belongsTo(User::class);
     }
-    public function Pencapaian()
+
+    public function programStudi()
     {
-        return $this->hasMany(Pencapaian::class);
+        return $this->belongsTo(ProgramStudi::class);
+    }
+
+    public function pengajuanKegiatan()
+    {
+        return $this->hasMany(pengajuanKegiatan::class);
+    }
+
+    public function poinDiterima()
+    {
+        return $this->hasMany(PengajuanKegiatan::class, 'mahasiswa_id')
+            ->where('status', 'diterima');
+    }
+
+    public function TotalPoinMahasiswa()
+    {
+        return $this->hasOne(TotalPoinMahasiswa::class);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TingkatResource\Pages;
 use App\Filament\Resources\TingkatResource\RelationManagers;
 use App\Models\Tingkat;
+
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,7 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TingkatResource extends Resource
+class TingkatResource extends Resource 
 {
     protected static ?string $model = Tingkat::class;
 
@@ -93,4 +94,6 @@ class TingkatResource extends Resource
             'edit' => Pages\EditTingkat::route('/{record}/edit'),
         ];
     }
+
+    
 }

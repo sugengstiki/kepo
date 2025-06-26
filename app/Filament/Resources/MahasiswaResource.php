@@ -48,6 +48,11 @@ class MahasiswaResource extends Resource
                         ->password()
                         ->required()
                         ->minLength(8),
+                    Forms\Components\Select::make('roles')
+                        ->relationship('roles', 'name')
+                        ->multiple()
+                        ->preload()
+                        ->searchable(),                                         
                 ]),
             ]);
     }

@@ -1,0 +1,194 @@
+[angkatan]
+    *id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    tahun {label:"INTEGER"}
+    target_poin {label:"INTEGER"}
+    updated_at {label:"DATETIME"}
+[cache]
+    *key {label:"VARCHAR"}
+    expiration {label:"INTEGER"}
+    value {label:"TEXT"}
+[cache_locks]
+    *key {label:"VARCHAR"}
+    expiration {label:"INTEGER"}
+    owner {label:"VARCHAR"}
+[failed_jobs]
+    *id {label:"INTEGER"}
+    connection {label:"TEXT"}
+    exception {label:"TEXT"}
+    failed_at {label:"DATETIME"}
+    payload {label:"TEXT"}
+    queue {label:"TEXT"}
+    uuid {label:"VARCHAR"}
+[jenis_kegiatans]
+    *id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    nama {label:"VARCHAR"}
+    updated_at {label:"DATETIME"}
+[job_batches]
+    *id {label:"VARCHAR"}
+    cancelled_at {label:"INTEGER"}
+    created_at {label:"INTEGER"}
+    failed_job_ids {label:"TEXT"}
+    failed_jobs {label:"INTEGER"}
+    finished_at {label:"INTEGER"}
+    name {label:"VARCHAR"}
+    options {label:"TEXT"}
+    pending_jobs {label:"INTEGER"}
+    total_jobs {label:"INTEGER"}
+[jobs]
+    *id {label:"INTEGER"}
+    attempts {label:"INTEGER"}
+    available_at {label:"INTEGER"}
+    created_at {label:"INTEGER"}
+    payload {label:"TEXT"}
+    queue {label:"VARCHAR"}
+    reserved_at {label:"INTEGER"}
+[kegiatans]
+    *id {label:"INTEGER"}
+    berkas_pendukung {label:"VARCHAR"}
+    created_at {label:"DATETIME"}
+    mahasiswa_id {label:"INTEGER"}
+    nama_kegiatan {label:"VARCHAR"}
+    pedoman_detail_id {label:"INTEGER"}
+    poin {label:"INTEGER"}
+    status_validasi {label:"VARCHAR"}
+    updated_at {label:"DATETIME"}
+[mahasiswas]
+    *id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    email {label:"VARCHAR"}
+    nama {label:"VARCHAR"}
+    nrp {label:"VARCHAR"}
+    program_studi_id {label:"INTEGER"}
+    tahun_masuk {label:"INTEGER"}
+    updated_at {label:"DATETIME"}
+    user_id {label:"INTEGER"}
+[program_studis]
+    *id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    kode {label:"VARCHAR"}
+    nama {label:"VARCHAR"}
+    updated_at {label:"DATETIME"}
+[users]
+    *id {label:"INTEGER"}
+    angkatan_id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    email {label:"VARCHAR"}
+    email_verified_at {label:"DATETIME"}
+    name {label:"VARCHAR"}
+    password {label:"VARCHAR"}
+    remember_token {label:"VARCHAR"}
+    updated_at {label:"DATETIME"}
+[pedoman_details]
+    *id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    pedoman_id {label:"INTEGER"}
+    peran {label:"VARCHAR"}
+    poin {label:"INTEGER"}
+    tingkat {label:"VARCHAR"}
+    updated_at {label:"DATETIME"}
+[pedomen]
+    *id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    jenis_kegiatan {label:"VARCHAR"}
+    updated_at {label:"DATETIME"}
+[master_poin]
+    *id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    jenis_kegiatan_id {label:"INTEGER"}
+    peran_id {label:"INTEGER"}
+    poin {label:"INTEGER"}
+    tingkat_id {label:"INTEGER"}
+    updated_at {label:"DATETIME"}
+[peran]
+    *id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    nama {label:"VARCHAR"}
+    updated_at {label:"DATETIME"}
+[tingkat]
+    *id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    nama {label:"VARCHAR"}
+    updated_at {label:"DATETIME"}
+[migrations]
+    *id {label:"INTEGER"}
+    batch {label:"INTEGER"}
+    migration {label:"VARCHAR"}
+[model_has_permissions]
+    *model_id {label:"INTEGER"}
+    *model_type {label:"VARCHAR"}
+    *permission_id {label:"INTEGER"}
+[permissions]
+    *id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    guard_name {label:"VARCHAR"}
+    name {label:"VARCHAR"}
+    updated_at {label:"DATETIME"}
+[model_has_roles]
+    *model_id {label:"INTEGER"}
+    *model_type {label:"VARCHAR"}
+    *role_id {label:"INTEGER"}
+[roles]
+    *id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    guard_name {label:"VARCHAR"}
+    name {label:"VARCHAR"}
+    updated_at {label:"DATETIME"}
+[password_reset_tokens]
+    *email {label:"VARCHAR"}
+    created_at {label:"DATETIME"}
+    token {label:"VARCHAR"}
+[pencapaians]
+    *id {label:"INTEGER"}
+    angkatan {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    mahasiswa_id {label:"INTEGER"}
+    target_poin {label:"INTEGER"}
+    updated_at {label:"DATETIME"}
+[pengajuan_kegiatan]
+    *id {label:"INTEGER"}
+    catatan_validator {label:"TEXT"}
+    created_at {label:"DATETIME"}
+    file_pendukung {label:"VARCHAR"}
+    mahasiswa_id {label:"INTEGER"}
+    master_poin_id {label:"INTEGER"}
+    nama_kegiatan {label:"VARCHAR"}
+    poin_diterima {label:"INTEGER"}
+    status {label:"VARCHAR"}
+    tanggal_kegiatan {label:"VARCHAR"}
+    updated_at {label:"DATETIME"}
+[role_has_permissions]
+    *permission_id {label:"INTEGER"}
+    *role_id {label:"INTEGER"}
+[sessions]
+    *id {label:"VARCHAR"}
+    ip_address {label:"VARCHAR"}
+    last_activity {label:"INTEGER"}
+    payload {label:"TEXT"}
+    user_agent {label:"TEXT"}
+    user_id {label:"INTEGER"}
+[total_poin_mahasiswas]
+    *id {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    mahasiswa_id {label:"INTEGER"}
+    terakhir_diperbarui {label:"DATETIME"}
+    total_poin {label:"INTEGER"}
+    updated_at {label:"DATETIME"}
+pedoman_details."id" 1--* kegiatans."pedoman_detail_id"
+mahasiswas."id" 1--* kegiatans."mahasiswa_id"
+program_studis."id" 1--* mahasiswas."program_studi_id"
+users."id" 1--* mahasiswas."user_id"
+angkatan."id" ?--* users."angkatan_id"
+pedomen."id" 1--* pedoman_details."pedoman_id"
+jenis_kegiatans."id" 1--* master_poin."jenis_kegiatan_id"
+peran."id" 1--* master_poin."peran_id"
+tingkat."id" 1--* master_poin."tingkat_id"
+permissions."id" 1--* model_has_permissions."permission_id"
+roles."id" 1--* model_has_roles."role_id"
+mahasiswas."id" 1--* pencapaians."mahasiswa_id"
+master_poin."id" 1--* pengajuan_kegiatan."master_poin_id"
+mahasiswas."id" 1--* pengajuan_kegiatan."mahasiswa_id"
+roles."id" 1--* role_has_permissions."role_id"
+permissions."id" 1--* role_has_permissions."permission_id"
+mahasiswas."id" 1--* total_poin_mahasiswas."mahasiswa_id"

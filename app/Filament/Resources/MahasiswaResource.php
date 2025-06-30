@@ -6,6 +6,7 @@ use App\Filament\Resources\MahasiswaResource\Pages;
 use App\Filament\Resources\MahasiswaResource\RelationManagers;
 use App\Models\Mahasiswa;
 use App\Models\ProgramStudi;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -26,16 +27,33 @@ class MahasiswaResource extends Resource
             ->schema([
             Forms\Components\TextInput::make('nrp')->required()->unique('mahasiswas', 'nrp', ignoreRecord: true),
             Forms\Components\TextInput::make('nama')->required()->maxLength(255),
-            Forms\Components\TextInput::make('email')->email()->required()->unique('mahasiswas', 'email', ignoreRecord: true),
+            Forms\Components\TextInput::make('email')->email()->required()->unique('mahasiswas', 'email', ignoreRecord: true)
+                ->reactive()
+                ->afterStateUpdated(function ($state, callable $set) {
+                    $user = User::where('email', $state)->first();
+
+                    if ($user) {
+                        // Jika user ditemukan, set user_id otomatis
+                        $set('user_id', $user->id);
+                    } else {
+                        // Kosongkan user_id kalau email tidak ditemukan
+                        $set('user_id', null);
+                    }
+                }),
             Forms\Components\TextInput::make('tahun_masuk')->required()->numeric()->minValue(2000)->maxValue(date('Y')),
             Forms\Components\Select::make('program_studi_id')
                 ->label('Program Studi')
                 ->options(ProgramStudi::all()->pluck('nama', 'id'))
-                ->searchable()
+                // ->searchable()
                 ->required(),
             Forms\Components\Select::make('user_id')
                 ->label('Akun Login')
                 ->relationship('user', 'email')
+                ->disabled(fn(callable $get) => User::where('email', $get('email'))->exists())
+                // ->options(function () {
+                //     return User::orderBy('email')->pluck('email', 'id');
+                // })
+                ->dehydrated()
                 ->searchable()
                 ->required()
                 ->createOptionForm([

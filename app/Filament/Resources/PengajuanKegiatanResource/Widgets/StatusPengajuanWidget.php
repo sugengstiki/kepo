@@ -20,14 +20,14 @@ class StatusPengajuanWidget extends BaseWidget
             return [];
         }
 
-        Log::info('Data Mahasiswa:', ['mahasiswa' => $mahasiswa?->toArray()]);
+        // Log::info('Data Mahasiswa:', ['mahasiswa' => $mahasiswa?->toArray()]);
         
         
         $totalPengajuan = $mahasiswa->pengajuanKegiatan()->count();
         $diterima = $mahasiswa->pengajuanKegiatan()->where('status', 'disetujui')->count();
         $persentase = $totalPengajuan > 0 ? round(($diterima / $totalPengajuan) * 100) : 0;
         
-        Log::info('total Pengajuan:', ['pengajuanKegiatan' => $mahasiswa->pengajuanKegiatan?->toArray()]);
+        // Log::info('total Pengajuan:', ['pengajuanKegiatan' => $mahasiswa->pengajuanKegiatan?->toArray()]);
         return [
             Stat::make('Total Pengajuan', $totalPengajuan),
             Stat::make('Diterima', $diterima),

@@ -49,7 +49,7 @@ class MahasiswaResource extends Resource
             Forms\Components\Select::make('user_id')
                 ->label('Akun Login')
                 ->relationship('user', 'email')
-                ->disabled(fn(callable $get) => User::where('email', $get('email'))->exists())
+                // ->disabled(fn(callable $get) => User::where('email', $get('email'))->exists())
                 // ->options(function () {
                 //     return User::orderBy('email')->pluck('email', 'id');
                 // })

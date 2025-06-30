@@ -7,6 +7,8 @@ use App\Filament\Resources\MasterPoinResource\RelationManagers;
 use App\Models\JenisKegiatan;
 use App\Models\MasterPoin;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -38,16 +40,15 @@ class MasterPoinResource extends Resource
             ->schema([
                 Forms\Components\fieldset::make()
                     ->schema([
-                        Forms\Components\Select::make('jenis_kegiatan_id')
-                            ->label('Jenis Kegiatan')
-                            
+                        Select::make('jenis_kegiatan_id')
+                            ->label('Jenis Kegiatan')                            
                             ->options(JenisKegiatan::all()->pluck('nama', 'id'))
                             ->searchable()
                             ->required()
                             ->reactive()
                             ->afterStateUpdated(fn(callable $set) => $set('peran', null)),
 
-                        Forms\Components\TextInput::make('peran')
+                        TextInput::make('peran')
                             ->required()
                             ->maxLength(255)
                             ->datalist(function (callable $get) {
@@ -61,7 +62,7 @@ class MasterPoinResource extends Resource
                                     ->toArray();
                             }),
 
-                        Forms\Components\Select::make('tingkat')
+                        Select::make('tingkat')
                             ->options([
                                 'kampus' => 'Kampus',
                                 'kota' => 'Kota/Kabupaten',

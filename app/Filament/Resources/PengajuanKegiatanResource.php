@@ -22,6 +22,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -47,25 +48,23 @@ class PengajuanKegiatanResource extends Resource
                     ->default(function () {
                         return Mahasiswa::where('user_id', Auth::id())->first()->id;
                     }),
-            Forms\Components\TextInput::make('nama_kegiatan')
-                ->required()
-                ->maxLength(255)
-                ->columnSpanFull(),
+                Forms\Components\TextInput::make('nama_kegiatan')
+                    ->required()
+                    ->maxLength(255)
+                    ->columnSpanFull(),
 
-            Select::make('tanggal_kegiatan')
-                ->label('Tahun Kegiatan / Periode')
-                ->options(
-                    collect(range(2000, Carbon::now()->year))
-                        ->mapWithKeys(fn($year) => [$year => $year])
-                        ->reverse()
-                )
-                ->required()
-                ->columnSpanFull(),
+                Select::make('tanggal_kegiatan')
+                    ->label('Tahun Kegiatan / Periode')
+                    ->options(
+                        collect(range(2000, Carbon::now()->year))
+                            ->mapWithKeys(fn($year) => [$year => $year])
+                            ->reverse()
+                    )
+                    ->required()
+                    ->columnSpanFull(),
 
-            Forms\Components\Fieldset::make()
+                Forms\Components\Fieldset::make()
                     ->schema([
-                        
-
                         Forms\Components\Select::make('jenis_kegiatan_id')
                             ->label('Jenis Kegiatan')
                             ->options(JenisKegiatan::all()->pluck('nama', 'id'))
@@ -77,7 +76,7 @@ class PengajuanKegiatanResource extends Resource
                                 // $set('tingkat_id', null);
                             })
                             ->dehydrated(false),
-                             
+
 
                         Forms\Components\Grid::make(3)
                             ->schema([
@@ -139,7 +138,7 @@ class PengajuanKegiatanResource extends Resource
                                     })
                                     ->required()
                                     ->reactive()
-                                    ->dehydrated(false) 
+                                    ->dehydrated(false)
                                     ->default(function ($record) {
                                         return $record?->masterPoin?->peran_id;
                                     })
@@ -149,7 +148,7 @@ class PengajuanKegiatanResource extends Resource
                                         $tingkatId = $get('tingkat_id');
 
                                         if ($jenisKegiatanId && $peranId && $tingkatId) {
-                                             $masterPoin = MasterPoin::where('jenis_kegiatan_id', $jenisKegiatanId)
+                                            $masterPoin = MasterPoin::where('jenis_kegiatan_id', $jenisKegiatanId)
                                                 ->where('peran_id', $peranId)
                                                 ->where('tingkat_id', $tingkatId)
                                                 ->first();
@@ -160,7 +159,7 @@ class PengajuanKegiatanResource extends Resource
                                             }
                                         }
                                     }),
-                                
+
 
                                 Forms\Components\TextInput::make('poin_diterima')
                                     ->disabled()
@@ -171,28 +170,27 @@ class PengajuanKegiatanResource extends Resource
                                 Hidden::make('master_poin_id')
                                     ->afterStateHydrated(function (?string $state, callable $set) {
                                         $masterPoin = MasterPoin::find($state);
-                                        if(!$masterPoin){
+                                        if (!$masterPoin) {
                                             return [];
                                         }
                                         // Log::info('MasterPoin' . $masterPoin->jenis_kegiatan_id);
                                         $set('jenis_kegiatan_id', $masterPoin->jenis_kegiatan_id);
                                         $set('tingkat_id', $masterPoin->tingkat_id);
                                         $set('peran_id', $masterPoin->peran_id);
-                                        
                                     })
-                                    
+
                             ]),
 
-                        
+
                     ]),
 
-            Forms\Components\TextInput::make('file_pendukung')
-                ->label('Link Google Drive')
-                ->required()
-                ->url()
-                // ->rules([Url::default()])
-                ->placeholder('https://drive.google.com/...')
-                ->columnSpanFull(),
+                Forms\Components\TextInput::make('file_pendukung')
+                    ->label('Link Google Drive')
+                    ->required()
+                    ->url()
+                    // ->rules([Url::default()])
+                    ->placeholder('https://drive.google.com/...')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -200,22 +198,22 @@ class PengajuanKegiatanResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_kegiatan')
+                TextColumn::make('nama_kegiatan')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('tanggal_kegiatan')
+                TextColumn::make('tanggal_kegiatan')
                     ->label('Tahun')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('masterPoin.jenisKegiatan.nama')
+                TextColumn::make('masterPoin.jenisKegiatan.nama')
                     ->label('Jenis Kegiatan'),
 
-                Tables\Columns\TextColumn::make('masterPoin.tingkat.nama'),
-                Tables\Columns\TextColumn::make('masterPoin.peran.nama'),
+                TextColumn::make('masterPoin.tingkat.nama'),
+                TextColumn::make('masterPoin.peran.nama'),
 
 
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     // ->enum([
                     //     'diajukan' => 'Diajukan',
                     //     'diterima' => 'Diterima',
@@ -228,7 +226,7 @@ class PengajuanKegiatanResource extends Resource
                         'danger' => 'ditolak',
                     ]),
 
-                Tables\Columns\TextColumn::make('poin_diterima')
+                TextColumn::make('poin_diterima')
                     ->label('Poin')
                     ->formatStateUsing(fn($state) => $state ? number_format($state, 0) . ' poin' : '-'),
             ])
@@ -270,7 +268,7 @@ class PengajuanKegiatanResource extends Resource
             ->whereHas('mahasiswa', function ($query) {
                 $query->where('user_id', Auth::id());
             })
-            ->with(['masterPoin','masterPoin.jenisKegiatan', 'masterPoin.peran', 'masterPoin.tingkat']);
+            ->with(['masterPoin', 'masterPoin.jenisKegiatan', 'masterPoin.peran', 'masterPoin.tingkat']);
         // ->with(['masterPoin', 'masterPoin.jenisKegiatan']);
     }
 

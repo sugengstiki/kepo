@@ -31,6 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->unsavedChangesAlerts()
             ->brandName('SKEMA')
+            // ->viteTheme('resources/css/app.css')
             ->colors([
                 'primary' => Color::Green, // Set your choice of colors
             ])

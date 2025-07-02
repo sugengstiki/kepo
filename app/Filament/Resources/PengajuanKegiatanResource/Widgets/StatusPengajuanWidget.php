@@ -25,12 +25,16 @@ class StatusPengajuanWidget extends BaseWidget
         
         $totalPengajuan = $mahasiswa->pengajuanKegiatan()->count();
         $diterima = $mahasiswa->pengajuanKegiatan()->where('status', 'disetujui')->count();
+        $totalPoin = $mahasiswa->poinDiterima()->sum('poin_diterima');
+        $targetPoin = $mahasiswa->angkatan?->target_poin ?? 0;
         $persentase = $totalPengajuan > 0 ? round(($diterima / $totalPengajuan) * 100) : 0;
         
         // Log::info('total Pengajuan:', ['pengajuanKegiatan' => $mahasiswa->pengajuanKegiatan?->toArray()]);
         return [
-            Stat::make('Total Pengajuan', $totalPengajuan),
-            Stat::make('Diterima', $diterima),
+            Stat::make('Poin', "{$totalPoin} / {$targetPoin}")
+                ->description('total poin dari target yang harus dicapai'),
+            Stat::make('Pengajuan', "{$diterima} / {$totalPengajuan}")
+                ->description('pengajuan yang diterima dari total pengajuan'),
             Stat::make('Persentase Diterima', $persentase . '%')
                 ->description('Dari total pengajuan')
                 ->color($persentase > 70 ? 'success' : ($persentase > 30 ? 'warning' : 'danger')),

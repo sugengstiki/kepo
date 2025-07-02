@@ -34,11 +34,16 @@ class Mahasiswa extends Model
     public function poinDiterima()
     {
         return $this->hasMany(PengajuanKegiatan::class, 'mahasiswa_id')
-            ->where('status', 'diterima');
+            ->where('status', 'disetujui');
     }
 
     public function TotalPoinMahasiswa()
     {
         return $this->hasOne(TotalPoinMahasiswa::class);
+    }
+
+    public function angkatan()
+    {
+        return $this->belongsTo(Angkatan::class, 'tahun_masuk', 'tahun');
     }
 }
